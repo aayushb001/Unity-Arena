@@ -7,8 +7,9 @@ public class PlayerMovement : MonoBehaviour {
     private CharacterController characterController;
 
     [SerializeField] //Can be edited in the inspector
-    private float moveSpeed = 350f;
-    private float rotationSpeed = 5f;
+    private float moveSpeed = 0.1f;
+    [SerializeField]
+    private float rotationRate = 150f;
 
     private void Awake() {
         characterController = GetComponent<CharacterController>();
@@ -16,16 +17,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void Update () {
-        var horizontal = Input.GetAxis("Horizontal");
-        var vertical = Input.GetAxis("Vertical");
-        var movement = new Vector3(horizontal, 0, vertical);
-
-        characterController.SimpleMove(movement * Time.deltaTime * moveSpeed);
+        float moveAxis = Input.GetAxis("Vertical");
+        float turnAxis = Input.GetAxis("Horizontal");
+        transform.Translate(Vector3.forward * moveAxis * moveSpeed);
+        transform.Rotate(0, turnAxis * rotationRate * Time.deltaTime, 0);
+        var movement = new Vector3(turnAxis, 0, moveAxis);   
         characterAnimator.SetFloat("Speed", movement.magnitude);
-
-        if (movement.magnitude > 0) {
-            Quaternion facingDirection = Quaternion.LookRotation(movement);
-            transform.rotation = Quaternion.Slerp(transform.rotation, facingDirection, Time.deltaTime * rotationSpeed);
-        }
     }
+    
 }
