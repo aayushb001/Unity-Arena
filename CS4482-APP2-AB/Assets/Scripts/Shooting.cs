@@ -23,13 +23,16 @@ public class Shooting : MonoBehaviour {
                 }
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (Manager.itState)
+        if (!PauseMenu.isPaused || !Manager.gameEnded)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (projectileSpawn.name.Equals("Gun"))
+                if (Manager.itState)
                 {
-                    Shoot();
+                    if (projectileSpawn.name.Equals("Gun"))
+                    {
+                        Shoot();
+                    }
                 }
             }
         }

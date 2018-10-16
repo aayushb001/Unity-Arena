@@ -15,7 +15,6 @@ public class Projectile : MonoBehaviour
             {
                 Manager.itState = true;
                 Manager.enemyScore++;
-                Debug.Log(Manager.enemyScore + "  " + Manager.playerScore);
                 destroyProjectiles("ProjectileEnemy");
             }
             else
@@ -29,7 +28,6 @@ public class Projectile : MonoBehaviour
             {
                 Manager.itState = false;
                 Manager.playerScore++;
-                Debug.Log(Manager.enemyScore + "  " + Manager.playerScore);
                 destroyProjectiles("Projectile");
             }
             else

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour {
-
+    public GameObject itCapsule;
     public float enemyMovementSpeed;
     public float stoppingDistanceFromPlayer;
     public float retreatDistanceFromPlayer;
@@ -27,6 +27,15 @@ public class EnemyBehavior : MonoBehaviour {
 
         if (!Manager.itState)
         {
+            itCapsule.SetActive(true);
+        }
+        else
+        {
+            itCapsule.SetActive(false);
+        }
+
+        //if (!Manager.itState)
+        //{
             if (Vector3.Distance(transform.position, player.position) > stoppingDistanceFromPlayer)
              {
                  transform.position = Vector3.MoveTowards(transform.position, player.position, enemyMovementSpeed * Time.deltaTime);
@@ -43,8 +52,8 @@ public class EnemyBehavior : MonoBehaviour {
                  transform.LookAt(player.transform);
              }
              
-        }
-        if (Manager.itState)
+        //}
+       /* if (Manager.itState)
         {
             if (Vector3.Distance(transform.position, player.position) < retreatDistanceFromPlayer)
             {
@@ -56,7 +65,7 @@ public class EnemyBehavior : MonoBehaviour {
             {
                 // IMPLEMENT RANDOM MOVEMENT
             }
-        }
+        }*/
         //Select run animation or idle animation based on position change
         if (previous_x != transform.position.x || previous_z != transform.position.z)
         {
