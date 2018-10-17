@@ -19,7 +19,6 @@ public class Manager : MonoBehaviour {
         timeRemaining = 300;
         gameEnded = false;
         float random = Random.Range(0, 10);
-        Debug.Log("RAND:" + random);
         if ( random < 5)
         {
             itState = false;

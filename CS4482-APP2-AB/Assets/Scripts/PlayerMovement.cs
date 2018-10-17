@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour {
     private float strafeSpeed = 0.15f;
     [SerializeField]
     private float rotationRate = 150f;
-
     private void Awake() {
         characterAnimator = GetComponentInChildren<Animator>();
     }
@@ -55,6 +54,7 @@ public class PlayerMovement : MonoBehaviour {
                 {
                     transform.Translate(Vector3.right * 1 * strafeSpeed);
                 }
+
                 if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W))
                 {
                     characterAnimator.SetFloat("Speed", new Vector3(1, 0, 1).magnitude);

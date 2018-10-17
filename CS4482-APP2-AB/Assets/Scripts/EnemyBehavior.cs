@@ -1,30 +1,51 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyBehavior : MonoBehaviour {
     public GameObject itCapsule;
     public float enemyMovementSpeed;
+    public float enemyFleeSpeed;
     public float stoppingDistanceFromPlayer;
     public float retreatDistanceFromPlayer;
+    public float runDistanceFromPlayer;
+    public GameObject g0;
+    public GameObject g1;
+    public GameObject g2;
+    public GameObject g3;
+    public GameObject g4;
+    public GameObject g5;
+    public GameObject g6;
+    public GameObject g7;
+    public GameObject g8;
+    GameObject[] gos;
     public Transform player;
-    float previous_x;
-    float previous_z;
     private Animator characterAnimator;
+    public Rigidbody rb;
+    private GameObject randomObj;
+    private int randNum;
+    NavMeshAgent _navMeshAgent;
+    private bool cFlag;
 
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        previous_x = transform.position.x;
-        previous_z = transform.position.z;
+        cFlag = false;
+        _navMeshAgent = this.GetComponent<NavMeshAgent>();
+        if (_navMeshAgent == null) {
+            Debug.Log("Nav mesh agent component is not attached to this object.");
+        }
+        gos = new GameObject[] { g0, g1, g3, g4, g5, g6, g7, g8 };
+        randomObj = g4;
     }
 
     private void Awake()
     {
-        characterAnimator = GetComponentInChildren<Animator>();
+        characterAnimator = GetComponentInChildren<Animator>();        
     }
 
     void Update () {
-
+        
         if (!Manager.itState)
         {
             itCapsule.SetActive(true);
@@ -33,48 +54,41 @@ public class EnemyBehavior : MonoBehaviour {
         {
             itCapsule.SetActive(false);
         }
-
-        //if (!Manager.itState)
-        //{
+        
+        if (!Manager.itState)
+        {
             if (Vector3.Distance(transform.position, player.position) > stoppingDistanceFromPlayer)
-             {
-                 transform.position = Vector3.MoveTowards(transform.position, player.position, enemyMovementSpeed * Time.deltaTime);
-                 transform.LookAt(player.transform);
-             }
-             else if (Vector3.Distance(transform.position, player.position) < stoppingDistanceFromPlayer && Vector3.Distance(transform.position, player.position) > retreatDistanceFromPlayer)
-             {
-                 transform.position = this.transform.position;
-                 transform.LookAt(player.transform);
-             }
-             else if (Vector3.Distance(transform.position, player.position) < retreatDistanceFromPlayer)
-             {
-                 transform.position = Vector3.MoveTowards(transform.position, player.position, -enemyMovementSpeed * Time.deltaTime);
-                 transform.LookAt(player.transform);
-             }
-             
-        //}
-       /* if (Manager.itState)
-        {
-            if (Vector3.Distance(transform.position, player.position) < retreatDistanceFromPlayer)
             {
-                transform.position = Vector3.MoveTowards(transform.position, player.position, -enemyMovementSpeed * Time.deltaTime);
-                //Look away
-                transform.rotation = Quaternion.LookRotation(transform.position - player.position);
+                _navMeshAgent.SetDestination(player.transform.position);
             }
-            else if (Vector3.Distance(transform.position, player.position) >= retreatDistanceFromPlayer)
-            {
-                // IMPLEMENT RANDOM MOVEMENT
-            }
-        }*/
-        //Select run animation or idle animation based on position change
-        if (previous_x != transform.position.x || previous_z != transform.position.z)
+            cFlag = false;
+        }
+        if (Manager.itState)
         {
-            characterAnimator.SetFloat("Speed", 1);
+            if (cFlag == false) {
+                cFlag = true;
+                randNum = Random.Range(0, 9);
+                randomObj = gos[randNum];
+            }
+
+            if (transform.position.x == randomObj.transform.position.x && transform.position.z == randomObj.transform.position.z)
+            {
+                randNum = Random.Range(0, 9);
+                randomObj = gos[randNum];
+            }            
+            _navMeshAgent.SetDestination(randomObj.transform.position);
+        }
+        float velFactor = 0;
+
+        if (Manager.itState)
+        {
+            velFactor = 100000000;
         }
         else {
-            characterAnimator.SetFloat("Speed", 0);
+            velFactor = 1000;
         }
-        previous_x = transform.position.x;
-        previous_z = transform.position.z;
+
+        characterAnimator.SetFloat("Speed", rb.velocity.magnitude * velFactor);
+        
     }
 }
