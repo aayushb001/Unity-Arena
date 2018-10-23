@@ -18,11 +18,11 @@ public class Manager : MonoBehaviour {
     public static bool saved;
 
     void Start () {
-        Debug.Log("manager "  + MainMenu.playerName);
+        
         saved = false;
         playerScore = 0;
         //enemyScore = 0;
-        timeRemaining = 5;
+        timeRemaining = 20;
         gameEnded = false;
         float random = UnityEngine.Random.Range(0, 10);
         if ( random < 5)
@@ -66,45 +66,40 @@ public class Manager : MonoBehaviour {
         }
         if (saved == false)
         {
-            saveData(MainMenu.playerName, playerScore);
+            String name = ""+MainMenu.playerName;
+            saveData(name, playerScore);
             saved = true;
         }        
         gameEnded = true;
         StartCoroutine(ExecuteAfterTime());
+
     }
 
     public void saveData(string name, float score) {
-        if (playerScore > 0)
-        {
-            if (File.Exists(Application.dataPath + "/Scripts/score.sav"))
-            {
-                Debug.Log("SAVE EXISTS");
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream stream = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Open);
-                List<PlayerData> pd = bf.Deserialize(stream) as List<PlayerData>;
-                Debug.Log("BEFORE NEW SAVE: " + pd.Count);
-                stream.Close();
 
-                PlayerData data = new PlayerData(name, playerScore);
-                Debug.Log("Input: " + name + playerScore);
-                BinaryFormatter bf2 = new BinaryFormatter();
-                FileStream stream2 = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Create);
-                pd.Add(data);
-                Debug.Log("ADDED");
-                bf2.Serialize(stream2, pd.Count);
-                Debug.Log("SERIALIZED");
-                stream2.Close();
-            }
-            else
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream stream = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Create);
-                List<PlayerData> pd = new List<PlayerData>();
-                PlayerData data = new PlayerData(name, playerScore);
-                pd.Add(data);
-                bf.Serialize(stream, pd);
-                stream.Close();
-            }
+        if (File.Exists(Application.dataPath + "/Scripts/score.sav"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream stream = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Open);
+            List<PlayerData> pd = bf.Deserialize(stream) as List<PlayerData>;
+            PlayerData data = new PlayerData(name, playerScore);
+            stream.Close();
+
+            BinaryFormatter bf2 = new BinaryFormatter();
+            FileStream stream2 = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Create);
+            pd.Add(data);
+            bf2.Serialize(stream2, pd);
+            stream2.Close();           
+        }
+        else
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream stream = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Create);
+            List<PlayerData> pd = new List<PlayerData>();
+            PlayerData data = new PlayerData(name, playerScore);
+            pd.Add(data);
+            bf.Serialize(stream, pd);
+            stream.Close();
         }
     }
 

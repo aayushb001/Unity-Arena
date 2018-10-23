@@ -29,7 +29,6 @@ public class MainMenu : MonoBehaviour {
             playerName = name;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-        pdList = loadData();
     }
 
     public void playGame() {
@@ -51,6 +50,7 @@ public class MainMenu : MonoBehaviour {
         string displayText = "";
         if (pdList != null) {
             foreach (PlayerData data in pdList) {
+                Debug.Log(data.name + ":   " + data.score + "||");
                 displayText += data.name + ":   " + data.score + System.Environment.NewLine;
             }
         }
