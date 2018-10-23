@@ -7,14 +7,13 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider obj)
     {
-        Debug.Log(obj.name);
 
         if (!Manager.itState)
         {
             if (obj.name == "GreenSoldier")
             {
                 Manager.itState = true;
-                Manager.enemyScore++;
+                //Manager.enemyScore++;
                 destroyProjectiles("ProjectileEnemy");
             }
             else
@@ -27,7 +26,7 @@ public class Projectile : MonoBehaviour
             if (obj.name == "BlueSoldier")
             {
                 Manager.itState = false;
-                Manager.playerScore++;
+                //Manager.playerScore++;
                 destroyProjectiles("Projectile");
             }
             else

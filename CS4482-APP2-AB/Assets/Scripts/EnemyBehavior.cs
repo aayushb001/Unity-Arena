@@ -26,11 +26,12 @@ public class EnemyBehavior : MonoBehaviour {
     private GameObject randomObj;
     private int randNum;
     NavMeshAgent _navMeshAgent;
-    private bool cFlag;
+    //private bool cFlag;
+    public NavMeshAgent nav;
 
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        cFlag = false;
+ //       cFlag = false;
         _navMeshAgent = this.GetComponent<NavMeshAgent>();
         if (_navMeshAgent == null) {
             Debug.Log("Nav mesh agent component is not attached to this object.");
@@ -61,19 +62,19 @@ public class EnemyBehavior : MonoBehaviour {
             {
                 _navMeshAgent.SetDestination(player.transform.position);
             }
-            cFlag = false;
+//            cFlag = false;
         }
         if (Manager.itState)
         {
-            if (cFlag == false) {
+/*            if (cFlag == false) {
                 cFlag = true;
-                randNum = Random.Range(0, 9);
+                randNum = Random.Range(0, 6);
                 randomObj = gos[randNum];
             }
-
-            if (transform.position.x == randomObj.transform.position.x && transform.position.z == randomObj.transform.position.z)
-            {
-                randNum = Random.Range(0, 9);
+*/
+            if (nav.velocity.magnitude <= 0.5)//(transform.position.x == randomObj.transform.position.x || transform.position.z == randomObj.transform.position.z)
+            {                
+                randNum = Random.Range(0, 6);
                 randomObj = gos[randNum];
             }            
             _navMeshAgent.SetDestination(randomObj.transform.position);
