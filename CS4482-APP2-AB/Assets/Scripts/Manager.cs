@@ -22,7 +22,7 @@ public class Manager : MonoBehaviour {
         saved = false;
         playerScore = 0;
         //enemyScore = 0;
-        timeRemaining = 20;
+        timeRemaining = 5;
         gameEnded = false;
         float random = UnityEngine.Random.Range(0, 10);
         if ( random < 5)
@@ -76,17 +76,17 @@ public class Manager : MonoBehaviour {
     }
 
     public void saveData(string name, float score) {
-
-        if (File.Exists(Application.dataPath + "/Scripts/score.sav"))
+        Debug.Log("datapath: " + Application.dataPath);
+        if (File.Exists(Application.dataPath + "/score.sav"))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream stream = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Open);
+            FileStream stream = new FileStream(Application.dataPath + "/score.sav", FileMode.Open);
             List<PlayerData> pd = bf.Deserialize(stream) as List<PlayerData>;
             PlayerData data = new PlayerData(name, playerScore);
             stream.Close();
 
             BinaryFormatter bf2 = new BinaryFormatter();
-            FileStream stream2 = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Create);
+            FileStream stream2 = new FileStream(Application.dataPath + "/score.sav", FileMode.Create);
             pd.Add(data);
             bf2.Serialize(stream2, pd);
             stream2.Close();           
@@ -94,7 +94,7 @@ public class Manager : MonoBehaviour {
         else
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream stream = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Create);
+            FileStream stream = new FileStream(Application.dataPath + "/score.sav", FileMode.Create);
             List<PlayerData> pd = new List<PlayerData>();
             PlayerData data = new PlayerData(name, playerScore);
             pd.Add(data);

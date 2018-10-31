@@ -64,10 +64,10 @@ public class MainMenu : MonoBehaviour {
 
     public List<PlayerData> loadData()
     {
-        if (System.IO.File.Exists(Application.dataPath + "/Scripts/score.sav"))
+        if (System.IO.File.Exists(Application.dataPath + "/score.sav"))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream stream = new FileStream(Application.dataPath + "/Scripts/score.sav", FileMode.Open);
+            FileStream stream = new FileStream(Application.dataPath + "/score.sav", FileMode.Open);
             List<PlayerData> pd = bf.Deserialize(stream) as List<PlayerData>;
             stream.Close();
             return pd;
